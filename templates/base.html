@@ -3,12 +3,12 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>{% block title %}Main{% endblock %} | Geokulsa</title>
-    <!--<link rel="stylesheet" type="text/css" href="" />-->
+    {% block headerblock %}{% endblock headerblock %}
   </head>
   <body>
     <div id="container">
-      {% block container %}{% endblock %}
+      {% block container %}{% endblock container %}
     </div>
-    <!--<script type="text/javascript" src=""></script>-->
+    {% block footerblock %}{% endblock footerblock %}
   </body>
 </html>
