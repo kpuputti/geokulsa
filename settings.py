@@ -1,10 +1,19 @@
 # Django settings for geokulsa project.
 
-DEBUG = True
+import os
+import socket
+
+
+DEBUG = False
+
+# Use debug mode for local development.
+if socket.gethostname() == 'kpuputti-desktop':
+    DEBUG = True
+
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+    ('Kimmo Puputti', 'firstname.lastname@tkk.fi'),
 )
 
 MANAGERS = ADMINS
@@ -31,21 +40,23 @@ SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
+USE_I18N = False
+
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+ADMIN_MEDIA_PREFIX = '%sadmin-media/' % MEDIA_URL
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'dv$yevv+g8z8_h_=2(3*b8ok0coe%u-tnak7$09cke90x7r2n9'
@@ -69,6 +80,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_PATH, 'templates'),
 )
 
 INSTALLED_APPS = (
@@ -76,4 +88,12 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'django.contrib.admindocs',
+    'geobrowser',
 )
+
+# Import local settings.
+try:
+    from local_settings import *
+except ImportError:
+    pass
