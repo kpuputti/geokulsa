@@ -20,6 +20,13 @@ GEO.map = (function () {
 
     return {
         init: function () {
+            var latlng = new google.maps.LatLng(60.1847242, 24.8244935);
+            map = new google.maps.Map(document.getElementById("map"), {
+                'zoom': 14,
+                'center': latlng,
+                'mapTypeId': google.maps.MapTypeId.ROADMAP,
+                'mapTypeControl': false
+            });
 
         }
     };
