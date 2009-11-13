@@ -12,3 +12,24 @@ hr{height:1px;color:#aaa;background-color:#aaa;border:0;width:98%;margin:1em aut
 .overline{text-decoration:overline;}
 .line-through{text-decoration:line-through;}
 .highlight{background-color:#ff8;}
+
+html, body {
+height: 100%;
+}
+
+#container {
+height: 100%;
+position: relative;
+}
+
+#header {
+display: none;
+}
+
+#map {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+}
