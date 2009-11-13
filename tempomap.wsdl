@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="TempomapDAOService" targetNamespace="http://dao.kulsa.seco.fi/" xmlns:ns1="http://cxf.apache.org/bindings/xformat" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://dao.kulsa.seco.fi/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dao.kulsa.seco.fi/" xmlns:tns="http://dao.kulsa.seco.fi/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:complexType name="karttaPaikka">
+<xs:sequence>
+<xs:element name="distance" type="xs:double" />
+<xs:element name="ID" type="xs:int" />
+<xs:element minOccurs="0" name="imagepath" type="xs:string" />
+<xs:element minOccurs="0" name="itemlabel" type="xs:string" />
+<xs:element minOccurs="0" name="kokonaisuus" type="xs:string" />
+<xs:element minOccurs="0" name="label" type="xs:string" />
+<xs:element name="locationID" type="xs:int" />
+<xs:element minOccurs="0" name="locationlabel" type="xs:string" />
+<xs:element minOccurs="0" name="locationuri" type="xs:string" />
+<xs:element name="propertyID" type="xs:int" />
+<xs:element minOccurs="0" name="propertyuri" type="xs:string" />
+<xs:element minOccurs="0" name="tyyppi" type="xs:string" />
+<xs:element minOccurs="0" name="uri" type="xs:string" />
+<xs:element minOccurs="0" name="wgs84lat" type="xs:string" />
+<xs:element minOccurs="0" name="wgs84lng" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType final="#all" name="karttaPaikkaArray">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="item" nillable="true" type="tns:karttaPaikka" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getNearByThingsResponse">
+    <wsdl:part name="return" type="tns:karttaPaikkaArray">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getNearByThings">
+    <wsdl:part name="arg0" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="arg1" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="arg2" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="arg3" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ITempomapWS">
+    <wsdl:operation name="getNearByThings">
+      <wsdl:input message="tns:getNearByThings" name="getNearByThings">
+    </wsdl:input>
+      <wsdl:output message="tns:getNearByThingsResponse" name="getNearByThingsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TempomapDAOServiceSoapBinding" type="tns:ITempomapWS">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getNearByThings">
+      <soap:operation soapAction="" style="rpc" />
+      <wsdl:input name="getNearByThings">
+        <soap:body namespace="http://dao.kulsa.seco.fi/" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getNearByThingsResponse">
+        <soap:body namespace="http://dao.kulsa.seco.fi/" use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TempomapDAOService">
+    <wsdl:port binding="tns:TempomapDAOServiceSoapBinding" name="TempomapDAOPort">
+      <soap:address location="http://demo.seco.tkk.fi/kulsa/remoting/TempomapDAO" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
