@@ -3,32 +3,16 @@
 {% block title %}index{% endblock title %}
 
 {% block headerblock %}
-<link rel="stylesheet" type="text/css" href="/media/styles.css" />
+<link rel="stylesheet" type="text/css" href="/media/styles.css">
 {% endblock headerblock %}
 
 {% block container %}
 
-<div id="header">
-  <p><button id="show-popup">Show popup</button></p>
+<div id="message-wrapper">
+  <p id="message"></p>
 </div>
 
 <div id="map"></div>
-
-<div id="popup-wrapper">
-  <div id="opacity-overlay"></div>
-  <ul id="popup-list">
-    <li><a href="#">Item 1</a></li>
-    <li><a href="#">Item 2</a></li>
-    <li><a href="#">Item 3</a></li>
-    <li><a href="#">Item 4</a></li>
-    <li><a href="#">Item 5</a></li>
-    <li><a href="#">Item 6</a></li>
-    <li class="list-buttons">
-      <button>OK</button>
-      <button>Cancel</button>
-    </li>
-  </ul>
-</div>
 
 {% endblock container %}
 
