@@ -1,6 +1,6 @@
-from xml.dom import minidom
 from urllib2 import URLError
 from urllib2 import urlopen
+from xml.dom import minidom
 
 
 class Weather(object):
@@ -11,16 +11,25 @@ class Weather(object):
     def __init__(self, lat, lng):
         self.lat = lat
         self.lng = lng
-        self.url = self.LOOKUP_URL % (lat, lng)
+        self.lookup_url = self.LOOKUP_URL % (lat, lng)
 
     def get_weather(self):
-        try:
-            f = urlopen(self.url)
-        except URLError:
-            return None
-        doc = minidom.parseString(f.read())
-        icao = self._get_icao(doc)
 
+        try:
+            f = urlopen(self.lookup_url)
+        except URLError:
+            return {
+                'error': 'Could not get lookup data.'
+                }
+
+        doc = minidom.parseString(f.read())
+        f.close()
+        if doc is None:
+            return {
+                'error': 'Could not fetch lookup XML.'
+                }
+
+        icao = self._get_icao(doc)
         if icao is None:
             return {
                 'error': 'Could not get icao.'
@@ -39,12 +48,14 @@ class Weather(object):
         try:
             f = urlopen(weather_url)
         except URLError:
-            return None
+            return {
+                'error': 'Could not get weather data for icao %s.' % icao
+                }
+
         doc = minidom.parseString(f.read())
+        f.close()
         data = {
-            #'url': self.url,
             'icao': icao,
-            #'weather_url': weather_url,
             }
 
         temperatures = doc.getElementsByTagName('temp_c')
