@@ -61,13 +61,9 @@ class Weather(object):
         temperatures = doc.getElementsByTagName('temp_c')
         if len(temperatures) > 0:
             data['temperature'] = temperatures[0].firstChild.nodeValue
-        else:
-            data['temperature'] = 'Could not get.'
 
         weather_texts = doc.getElementsByTagName('weather')
         if len(weather_texts) > 0:
             data['weather'] = weather_texts[0].firstChild.nodeValue
-        else:
-            data['weather'] = 'Could not get.'
 
         return data
