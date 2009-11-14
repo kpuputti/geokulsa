@@ -20,6 +20,9 @@ urlpatterns = patterns('',
                            'document_root': MEDIA_ROOT
                            }),
 
+    (r'^api/weather$',
+     'geokulsa.geobrowser.views.weather'),
+
     (r'^$', 'geokulsa.geobrowser.views.index'),
 
 )
