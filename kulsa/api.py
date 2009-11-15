@@ -17,4 +17,8 @@ class KulsaFetcher(object):
         self.client = Client(WSDL_PATH)
 
     def get_nearby_items(self, radius=DEFAULT_NEARBY_RADIUS, item_type=URI_MUSEO):
-        return self.client.service.getNearByThings(self.lat, self.lng, radius, item_type)
+        results =  self.client.service.getNearByThings(self.lat, self.lng, radius, item_type)
+        if results:
+            return results
+        else:
+            return None
