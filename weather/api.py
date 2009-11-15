@@ -18,22 +18,16 @@ class Weather(object):
         try:
             f = urlopen(self.lookup_url)
         except URLError:
-            return {
-                'error': 'Could not get lookup data.'
-                }
+            return dict(error='Could not get lookup data.')
 
         doc = minidom.parseString(f.read())
         f.close()
         if doc is None:
-            return {
-                'error': 'Could not fetch lookup XML.'
-                }
+            return dict(error='Could not fetch lookup XML.')
 
         icao = self._get_icao(doc)
-        if icao is None:
-            return {
-                'error': 'Could not get icao.'
-                }
+        if icao is None or icao == '----':
+            return dict(error='Could not get icao.')
 
         return self._get_weather(icao)
 
@@ -48,15 +42,11 @@ class Weather(object):
         try:
             f = urlopen(weather_url)
         except URLError:
-            return {
-                'error': 'Could not get weather data for icao %s.' % icao
-                }
+            return dict(error='Could not get weather data for icao %s.' % icao)
 
         doc = minidom.parseString(f.read())
         f.close()
-        data = {
-            'icao': icao,
-            }
+        data = dict(icao=icao, weather_url=weather_url)
 
         temperatures = doc.getElementsByTagName('temp_c')
         if len(temperatures) > 0:
