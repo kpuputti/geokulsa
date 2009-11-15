@@ -93,6 +93,15 @@ INSTALLED_APPS = (
     'geobrowser',
 )
 
+WSDL_PATH = 'http://demo.seco.tkk.fi/kulsa/remoting/TempomapDAO?wsdl'
+
+URI_MUSEO = 'http://kulttuurisampo.fi/annotaatio#museo'
+URI_RAKENNETTU_KOHDE = 'http://kulttuurisampo.fi/annotaatio#rakennettu_kohde'
+URI_LUONTOKOHDE = 'http://kulttuurisampo.fi/annotaatio#luontokohde'
+
+# Default radius in meters for searching the nearby things.
+DEFAULT_NEARBY_RADIUS = 10000
+
 # Import local settings.
 try:
     from local_settings import *
