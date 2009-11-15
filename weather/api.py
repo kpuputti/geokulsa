@@ -46,7 +46,8 @@ class Weather(object):
 
         doc = minidom.parseString(f.read())
         f.close()
-        data = dict(icao=icao, weather_url=weather_url)
+        #data = dict(icao=icao, weather_url=weather_url)
+        data = dict(icao=icao)
 
         temperatures = doc.getElementsByTagName('temp_c')
         if len(temperatures) > 0:
@@ -55,5 +56,9 @@ class Weather(object):
         weather_texts = doc.getElementsByTagName('weather')
         if len(weather_texts) > 0:
             data['weather'] = weather_texts[0].firstChild.nodeValue
+
+        icon = doc.getElementsByTagName('icon')
+        if len(icon) > 0:
+            data['icon'] = icon[0].firstChild.nodeValue
 
         return data
