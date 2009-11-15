@@ -23,6 +23,9 @@ urlpatterns = patterns('',
     (r'^api/weather$',
      'geokulsa.geobrowser.views.weather'),
 
+    (r'^api/nearby$',
+     'geokulsa.geobrowser.views.nearby'),
+
     (r'^$', 'geokulsa.geobrowser.views.index'),
 
 )
