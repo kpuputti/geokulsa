@@ -14,6 +14,9 @@ var LOG = function (msg) {
 // Namespace object for all Javascript code.
 var GEO = {};
 
+// Environment object to store globally needed variables.
+GEO.env = {};
+
 GEO.msg = (function () {
 
     var messageWrapper = $('#message-wrapper'),
@@ -42,23 +45,96 @@ GEO.msg = (function () {
     };
 }());
 
+GEO.context = (function () {
+
+    var conditions = {
+            CLEAR: 'clear',
+            CLOUDY: 'cloudy',
+            FLURRIES: 'flurries',
+            FOG: 'fog',
+            HAZY: 'hazy',
+            MOSTLY_CLOUDY: 'mostlycloudy',
+            MOSTLY_SUNNY: 'mostlycunny',
+            PARTLY_CLOUDY: 'partlycloudy',
+            PARTLY_SUNNY: 'partlysunny',
+            RAIN: 'rain',
+            SLEET: 'sleet',
+            SNOW: 'snow',
+            SUNNY: 'sunny',
+            THUNDERSTORMS: 'tstorms'
+        },
+        minGoodHours = 7,
+        maxGoodHours = 21;
+
+    return {
+        isGoodWeather: function (weather) {
+            switch (weather) {
+              case conditions.CLEAR:
+                return true;
+              case conditions.CLOUDY:
+                return true;
+              case conditions.FLURRIES:
+                return false;
+              case conditions.FOG:
+                return false;
+              case conditions.HAZY:
+                return false;
+              case conditions.MOSTLY_CLOUDY:
+                return false;
+              case conditions.MOSTLY_SUNNY:
+                return true;
+              case conditions.PARTLY_CLOUDY:
+                return true;
+              case conditions.PARTLY_SUNNY:
+                return true;
+              case conditions.RAIN:
+                return false;
+              case conditions.SLEET:
+                return false;
+              case conditions.SNOW:
+                return false;
+              case conditions.SUNNY:
+                return true;
+              case conditions.THUNDERSTORMS:
+                return false;
+            default:
+                LOG('Unknown weather: ' + weather);
+                return false;
+            }
+        },
+        isGoodTime: function () {
+            var hours = (new Date()).getHours();
+            if (hours < minGoodHours || hours > maxGoodHours) {
+              return true;
+            }
+            return false;
+        }
+    };
+}());
+
 GEO.map = (function () {
 
     var map,
         latlng,
         weatherData,
 
-        setWeather = function (lat, lng) {
+        setContext = function (lat, lng) {
 
             $.getJSON('/api/weather', {
                 lat: lat,
                 lng: lng
             }, function (data) {
-                if (data && !data.error && data.weather && data.temperature) {
+
+                var isGoodWeather;
+
+                if (data && !data.error && data.weather && data.temperature && data.icon) {
 
                     weatherData = data;
+                    isGoodWeather = GEO.context.isGoodWeather(data.icon);
+
                     GEO.msg.message('Weather in your location: ' + data.weather +
-                                   ', ' + data.temperature + ' &#xb0;C.');
+                                    ', ' + data.temperature + ' &#xb0;C. [' +
+                                    data.icon + ', ' + isGoodWeather + ']');
 
                 } else if (data && data.error) {
                     LOG('Weather error: ' + data.error);
@@ -93,7 +169,7 @@ GEO.map = (function () {
                     LOG('Got user location: ' + lat + ', ' + lng);
                     latlng = new google.maps.LatLng(lat, lng);
                     map.panTo(latlng);
-                    setWeather(lat, lng);
+                    setContext(lat, lng);
 
                 }, function (p) {
                     // Could not get location.
