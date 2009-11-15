@@ -46,11 +46,39 @@ GEO.map = (function () {
 
     var map,
         latlng,
+        weatherData,
+
+        setWeather = function (lat, lng) {
+
+            $.getJSON('/api/weather', {
+                lat: lat,
+                lng: lng
+            }, function (data) {
+                if (data && !data.error && data.weather && data.temperature) {
+
+                    weatherData = data;
+                    GEO.msg.message('Weather in your location: ' + data.weather +
+                                   ', ' + data.temperature + ' &#xb0;C.');
+
+                } else if (data && data.error) {
+                    LOG('Weather error: ' + data.error);
+                } else {
+                    LOG('Unknown weather error.');
+                }
+            });
+        },
 
         setUserLocation = function () {
 
             if (geo_position_js.init()) {
                 geo_position_js.getCurrentPosition(function (p) {
+
+                    // If the location is already given, return immediately.
+                    // This is here because the api sometimes calls this
+                    // success function several times.
+                    if (latlng) {
+                        return;
+                    }
 
                     // Location successfully fetched.
                     var lat, lng;
@@ -65,6 +93,7 @@ GEO.map = (function () {
                     LOG('Got user location: ' + lat + ', ' + lng);
                     latlng = new google.maps.LatLng(lat, lng);
                     map.panTo(latlng);
+                    setWeather(lat, lng);
 
                 }, function (p) {
                     // Could not get location.
@@ -76,6 +105,7 @@ GEO.map = (function () {
                 GEO.msg.message('Location API not supported.');
             }
         };
+
 
     return {
         init: function () {
