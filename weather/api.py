@@ -3,6 +3,23 @@ from urllib2 import urlopen
 from xml.dom import minidom
 
 
+WEATHER_CONDITIONS = {
+    'clear': True,
+    'cloudy': True,
+    'flurries': False,
+    'fog': False,
+    'hazy': False,
+    'mostlycloudy': True,
+    'mostlysunny': True,
+    'partlycloudy': True,
+    'partlysunny': True,
+    'rain': False,
+    'sleet': False,
+    'snow': False,
+    'sunny': True,
+    'tstorms': False,
+    }
+
 class Weather(object):
 
     LOOKUP_URL = 'http://api.wunderground.com/auto/wui/geo/GeoLookupXML/index.xml?query=%f,%f'
@@ -60,5 +77,6 @@ class Weather(object):
         icon = doc.getElementsByTagName('icon')
         if len(icon) > 0:
             data['icon'] = icon[0].firstChild.nodeValue
+            data['isGoodWeather'] = WEATHER_CONDITIONS.get(data['icon'], False)
 
         return data
