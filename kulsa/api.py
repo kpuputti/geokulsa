@@ -16,9 +16,35 @@ class KulsaFetcher(object):
         self.lng = lng
         self.client = Client(WSDL_PATH)
 
-    def get_nearby_items(self, radius=DEFAULT_NEARBY_RADIUS, item_type=URI_MUSEO):
-        results =  self.client.service.getNearByThings(self.lat, self.lng, radius, item_type)
-        if results:
-            return results
-        else:
-            return None
+    def get_nearby_items(self, radius=DEFAULT_NEARBY_RADIUS,
+                         is_good_weather=False, is_good_time=False):
+        results = {
+            'luontokohde': {
+                'fetched': False
+                },
+            'museo': {
+                'fetched': False
+                },
+            'rakennettu': {
+                'fetched': False
+                },
+            }
+
+        if is_good_time:
+            items_museo = self.client.service.getNearByThings(
+                self.lat, self.lng, radius, URI_MUSEO)
+            results['museo']['fetched'] = True
+            results['museo']['length'] = len(items_museo)
+
+        if is_good_weather:
+            items_luontokohde = self.client.service.getNearByThings(
+                self.lat, self.lng, radius, URI_LUONTOKOHDE)
+            results['luontokohde']['fetched'] = True
+            results['luontokohde']['length'] = len(items_luontokohde)
+
+            items_rakennettu = self.client.service.getNearByThings(
+                self.lat, self.lng, radius, URI_RAKENNETTU_KOHDE)
+            results['rakennettu']['fetched'] = True
+            results['rakennettu']['length'] = len(items_rakennettu)
+
+        return results
