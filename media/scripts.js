@@ -78,8 +78,8 @@ GEO.context = (function () {
             SUNNY: 'sunny',
             THUNDERSTORMS: 'tstorms'
         },
-        minGoodHours = 7,
-        maxGoodHours = 21;
+        minGoodHours = 9,
+        maxGoodHours = 17;
 
     return {
         isGoodWeather: function (weather) {
@@ -95,7 +95,7 @@ GEO.context = (function () {
               case conditions.HAZY:
                 return false;
               case conditions.MOSTLY_CLOUDY:
-                return false;
+                return true;
               case conditions.MOSTLY_SUNNY:
                 return true;
               case conditions.PARTLY_CLOUDY:
