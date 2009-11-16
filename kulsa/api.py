@@ -3,6 +3,7 @@ from geokulsa.settings import URI_LUONTOKOHDE
 from geokulsa.settings import URI_MUSEO
 from geokulsa.settings import URI_RAKENNETTU_KOHDE
 from geokulsa.settings import WSDL_PATH
+from geokulsa.kulsa.test_data import TEST_DATA
 from geokulsa.weather.api import Weather
 from suds.client import Client
 
@@ -36,15 +37,27 @@ class KulsaFetcher(object):
             results['museo']['fetched'] = True
             results['museo']['length'] = len(items_museo)
 
+            if len(items_museo) == 0:
+                results['museo']['length'] = len(items_museo)
+                results['museo']['data'] = TEST_DATA['museo']
+
         if is_good_weather:
             items_luontokohde = self.client.service.getNearByThings(
                 self.lat, self.lng, radius, URI_LUONTOKOHDE)
             results['luontokohde']['fetched'] = True
             results['luontokohde']['length'] = len(items_luontokohde)
 
+            if len(items_luontokohde) == 0:
+                results['luontokohde']['length'] = len(items_luontokohde)
+                results['luontokohde']['data'] = TEST_DATA['luontokohde']
+
             items_rakennettu = self.client.service.getNearByThings(
                 self.lat, self.lng, radius, URI_RAKENNETTU_KOHDE)
             results['rakennettu']['fetched'] = True
             results['rakennettu']['length'] = len(items_rakennettu)
+
+            if len(items_rakennettu) == 0:
+                results['rakennettu']['length'] = len(items_rakennettu)
+                results['rakennettu']['data'] = TEST_DATA['rakennettu']
 
         return results
