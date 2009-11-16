@@ -2,6 +2,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from geokulsa.kulsa.api import KulsaFetcher
+from geokulsa.settings import DEFAULT_NEARBY_RADIUS
 from geokulsa.weather.api import Weather
 
 import json
@@ -34,12 +35,13 @@ def nearby(request):
     data = dict(error='Invalid coordinates.')
     lat = request.GET.get('lat', None)
     lng = request.GET.get('lng', None)
+    radius = request.GET.get('radius', DEFAULT_NEARBY_RADIUS)
 
     if lat and lng:
         try:
             lat = float(lat)
             lng = float(lng)
-            results = KulsaFetcher(lat, lng).get_nearby_items()
+            results = KulsaFetcher(lat, lng).get_nearby_items(radius=radius)
             if results is not None:
                 data = results
         except ValueError:
