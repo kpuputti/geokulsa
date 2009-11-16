@@ -152,6 +152,8 @@ GEO.map = (function () {
                                     GEO.escape(data.icon) + ', ' + GEO.escape(data.isGoodWeather) + ']');
 
                     weatherData = data;
+                    GEO.env.isGoodWeather = data.isGoodWeather;
+
                     $('#options-wrapper li.context-weather > span').html(data.weather + ' -> ' +
                                                                          (data.isGoodWeather ? 'good' : 'bad'));
                     $('#options-wrapper li.context-time > span').html(
@@ -217,6 +219,32 @@ GEO.map = (function () {
                 'mapTypeControl': false
             });
             setUserLocation();
+        },
+        fetchData: function () {
+
+            if (!latlng) {
+                GEO.msg.message('User location unknown, cannot fetch data.');
+                return;
+            }
+
+            var options = {
+                lat: latlng.lat(),
+                lng: latlng.lng()
+            };
+
+            if (GEO.env.isGoodWeather) {
+                options.is_good_weather = true;
+            }
+
+            if (GEO.context.isGoodTime()) {
+                options.is_good_time = true;
+            }
+
+            $.getJSON('/api/nearby', options, function (data) {
+
+                LOG(data);
+
+            });
         }
     };
 
@@ -229,8 +257,13 @@ GEO.addEvents = function () {
         e.preventDefault();
     });
 
-    $('#options-wrapper button').click(function (e) {
+    $('#options-wrapper li.ok-button button').click(function (e) {
         $('#options-wrapper:visible').fadeOut();
+        e.preventDefault();
+    });
+
+    $('#options-wrapper li.fetch-button button').click(function (e) {
+        GEO.map.fetchData();
         e.preventDefault();
     });
 
