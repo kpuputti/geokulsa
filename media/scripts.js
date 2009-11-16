@@ -120,9 +120,9 @@ GEO.context = (function () {
         isGoodTime: function () {
             var hours = (new Date()).getHours();
             if (hours < minGoodHours || hours > maxGoodHours) {
-              return true;
+              return false;
             }
-            return false;
+            return true;
         }
     };
 }());
@@ -142,14 +142,20 @@ GEO.map = (function () {
 
                 var isGoodWeather;
 
-                if (data && !data.error && data.weather && data.temperature && data.icon) {
+                if (data && !data.error && data.weather &&
+                    data.temperature && data.icon && data.isGoodWeather) {
 
-                    weatherData = data;
-                    isGoodWeather = GEO.context.isGoodWeather(data.icon);
+
 
                     GEO.msg.message('Weather in your location: ' + GEO.escape(data.weather) +
                                     ', ' + GEO.escape(data.temperature) + ' &#xb0;C. [' +
-                                    GEO.escape(data.icon) + ', ' + GEO.escape(isGoodWeather) + ']');
+                                    GEO.escape(data.icon) + ', ' + GEO.escape(data.isGoodWeather) + ']');
+
+                    weatherData = data;
+                    $('#options-wrapper li.context-weather > span').html(data.weather + ' -> ' +
+                                                                         (data.isGoodWeather ? 'good' : 'bad'));
+                    $('#options-wrapper li.context-time > span').html(
+                        GEO.context.isGoodTime() ? 'good' : 'bad');
 
                 } else if (data && data.error) {
                     LOG('Weather error: ' + data.error);
