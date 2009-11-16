@@ -36,12 +36,17 @@ def nearby(request):
     lat = request.GET.get('lat', None)
     lng = request.GET.get('lng', None)
     radius = request.GET.get('radius', DEFAULT_NEARBY_RADIUS)
+    is_good_weather = bool(request.GET.get('is_good_weather', False))
+    is_good_time = bool(request.GET.get('is_good_time', False))
+
 
     if lat and lng:
         try:
             lat = float(lat)
             lng = float(lng)
-            results = KulsaFetcher(lat, lng).get_nearby_items(radius=radius)
+            results = KulsaFetcher(lat, lng).get_nearby_items(radius=radius,
+                                                              is_good_weather=is_good_weather,
+                                                              is_good_time=is_good_time)
             if results is not None:
                 data = results
         except ValueError:
