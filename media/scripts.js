@@ -17,8 +17,23 @@ var GEO = {};
 // Environment object to store globally needed variables.
 GEO.env = {};
 
-GEO.msg = (function () {
+/*
+// This function seems to break js2-mode's indentation. :(
+GEO.escape = function (s) {
+    return s.replace(/&/g, '&amp;').
+             replace(/\"/g, '&quot;').
+             replace(/'/g, '&#39;').
+             replace(/</g, '&lt;').
+             replace(/>/g, '&gt;');
+};
+*/
 
+// Temporary solution is not to escape anything.
+GEO.escape = function (s) {
+    return s;
+};
+
+GEO.msg = (function () {
     var messageWrapper = $('#message-wrapper'),
         messageElement = $('#message'),
         timeout = 3000,
@@ -132,9 +147,9 @@ GEO.map = (function () {
                     weatherData = data;
                     isGoodWeather = GEO.context.isGoodWeather(data.icon);
 
-                    GEO.msg.message('Weather in your location: ' + data.weather +
-                                    ', ' + data.temperature + ' &#xb0;C. [' +
-                                    data.icon + ', ' + isGoodWeather + ']');
+                    GEO.msg.message('Weather in your location: ' + GEO.escape(data.weather) +
+                                    ', ' + GEO.escape(data.temperature) + ' &#xb0;C. [' +
+                                    GEO.escape(data.icon) + ', ' + GEO.escape(isGoodWeather) + ']');
 
                 } else if (data && data.error) {
                     LOG('Weather error: ' + data.error);
@@ -201,6 +216,21 @@ GEO.map = (function () {
 
 }());
 
+GEO.addEvents = function () {
+
+    $('#options-button > button').click(function (e) {
+        $('#options-wrapper:hidden').fadeIn();
+        e.preventDefault();
+    });
+
+    $('#options-wrapper button').click(function (e) {
+        $('#options-wrapper:visible').fadeOut();
+        e.preventDefault();
+    });
+
+};
+
 $(document).ready(function () {
     GEO.map.init();
+    GEO.addEvents();
 });
