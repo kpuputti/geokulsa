@@ -143,7 +143,7 @@ GEO.map = (function () {
                 var isGoodWeather;
 
                 if (data && !data.error && data.weather &&
-                    data.temperature && data.icon && data.isGoodWeather) {
+                    data.temperature && data.icon) {
 
 
 
@@ -152,7 +152,7 @@ GEO.map = (function () {
                                     GEO.escape(data.icon) + ', ' + GEO.escape(data.isGoodWeather) + ']');
 
                     weatherData = data;
-                    GEO.env.isGoodWeather = data.isGoodWeather;
+                  GEO.env.isGoodWeather = data.isGoodWeather ? true : false;
 
                     $('#options-wrapper li.context-weather > span').html(data.weather + ' -> ' +
                                                                          (data.isGoodWeather ? 'good' : 'bad'));
