@@ -90,7 +90,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'geobrowser',
+    'geokulsa.geobrowser',
 )
 
 WSDL_PATH = 'http://demo.seco.tkk.fi/kulsa/remoting/TempomapDAO?wsdl'
