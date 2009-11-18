@@ -39,7 +39,6 @@ def nearby(request):
     is_good_weather = bool(request.GET.get('is_good_weather', False))
     is_good_time = bool(request.GET.get('is_good_time', False))
 
-
     if lat and lng:
         try:
             lat = float(lat)
