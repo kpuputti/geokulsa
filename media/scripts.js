@@ -152,7 +152,7 @@ GEO.map = (function () {
                                     GEO.escape(data.icon) + ', ' + GEO.escape(data.isGoodWeather) + ']');
 
                     weatherData = data;
-                  GEO.env.isGoodWeather = data.isGoodWeather ? true : false;
+                    GEO.env.isGoodWeather = !!data.isGoodWeather;
 
                     $('#options-wrapper li.context-weather > span').html(data.weather + ' -> ' +
                                                                          (data.isGoodWeather ? 'good' : 'bad'));
@@ -187,6 +187,7 @@ GEO.map = (function () {
                         lng = parseFloat(p.coords.longitude.toFixed(2));
                     } catch (e) {
                         LOG('Invalid coordinates.');
+                        return;
                     }
 
                     LOG('Got user location: ' + lat + ', ' + lng);
