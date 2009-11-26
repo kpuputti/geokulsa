@@ -7,7 +7,7 @@ import socket
 DEBUG = False
 
 # Use debug mode for local development.
-if socket.gethostname() == 'kpuputti-desktop':
+if socket.gethostname() in ('kpuputti-desktop', 'kpuputti-laptop'):
     DEBUG = True
 
 TEMPLATE_DEBUG = DEBUG
